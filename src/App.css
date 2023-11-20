@@ -1,0 +1,210 @@
+.main-container{
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}
+
+.center-container{
+  height: 500px;
+  width: 350px;
+}
+.searchBar{
+  position: relative;
+}
+.searchInput{
+  width: 400px;
+  height: 35px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: gray;
+  padding-left: 40px;
+  outline: none;
+  border: 1px solid gray;
+}
+
+h2{
+  padding: 20px 0px;
+}
+
+.searchIcon{
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  left:8px; 
+  top: 5px;
+  color: gray;
+}
+
+.button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+.btn{
+  background-color: blue;
+  color: #fff;
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  font-size: 25px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* CSS for AddTask */
+.task-container{
+  width: 400px;
+  border: 2px solid gray;
+  padding: 10px 10px;
+  border-radius: 10px;
+  margin: 10px 0px;
+}
+.serviceHeader{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.name{
+  width: 110px;
+  outline: none;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid gray;
+  color: #333;
+}
+.serviceHeader .left{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.profileImg{
+  height: 40px;
+  width: 40px;
+  border: 1px solid gray;
+  border-radius: 50%;
+}
+.serviceMid{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0px;
+}
+
+.serviceMid select{
+  width: 120px;
+  border-radius: 10px;
+  padding: 5px;
+  outline: none;
+  border: 1px solid gray;
+  background-color: #fff;
+  font-weight: 600;
+  color: #333;
+  font-size: 13px;
+}
+.serviceMid input{
+  width: 115px;
+  border-radius: 10px;
+  padding: 5px;
+  outline: none;
+  border: 1px solid gray;
+  font-weight: 600;
+  color: #333;
+}
+.serviceDesc{
+  margin: 5px;
+}
+.serviceDesc textarea{
+  width: 100%;
+  border-radius: 10px;
+  resize: none;
+  overflow: hidden;
+  padding: 5px;
+  color: #333;
+  outline: none;
+  font-weight: 500;
+}
+.serviceDesc p{
+  color: gray;
+  font-weight: 500;
+}
+.editButton{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  
+}
+.editButton .fa {
+  color: red;
+  cursor: pointer;
+}
+.editButton .fa-pencil{
+  color: blue;
+  cursor: pointer;
+}
+.editButton .fa-check{  
+  border: 1px solid green;
+  border-radius: 50%;
+  color: green;
+  height: 20px;
+  width: 20px;
+  padding-left: 2px;
+  padding-top: 1px;
+  cursor: pointer;
+}
+.editButton .fa-times{
+  border: 1px solid red;
+  border-radius: 50%;
+  color: red;
+  height: 20px;
+  width: 20px;
+  padding-left: 3px;
+  padding-top: 1px;
+  cursor: pointer;
+}
+
+/* expand icon */
+.fa-chevron-down{
+  cursor: pointer;
+}
+.fa{
+  cursor: pointer;
+}
+
+/* Delete Button Style */
+.delete-task{
+  width: 400px;
+  height: 110px;
+  border: 2px solid gray;
+  border-radius: 10px;
+  margin: 10px 0px;
+  padding: 10px;
+}
+
+.delete-btn{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 20px 0px;
+}
+
+.delete-task button{
+  padding: 5px;
+  outline: none;
+  border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid gray;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.delete-task .del-btn{
+  color: #fff;
+  background-color: orangered;
+}
