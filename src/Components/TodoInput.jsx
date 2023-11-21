@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import SearchIcon from '../Images/SearchIcon.png'
 import Profile from '../Images/ProfileIcon.png'
-import { MyContext } from '../Context/Context';
-import { useContext } from 'react';
+
+let delArr = [];
+let displayArr = [];
+let showEditBtn = [];
+let copyTaskData = [];
 
 const TodoInput = () => {
 
@@ -18,15 +21,35 @@ const TodoInput = () => {
     const [desc, setDesc] = useState("");
 
     //Shrink Size of taks after Save button clicked
-    const [height, setHeight] = useState(false);
-    const [display, setDisplay] = useState(false);
 
     const [readonly, setReadonly] = useState(false);
     // const [count, setCount] = useContext(MyContext);
 
+    const [searchText, setSearchText] = useState("");
+
     const [del, setDel] = useState(false);
 
-    const saveTask = () => {
+    const style = {
+        border: 'none',
+        readonly: true,
+    }
+
+    useEffect(() => {
+        let name;
+        let data = addTask.filter(ele => {
+            name = ele.name;
+            return name.includes(searchText);
+        })
+
+        searchText === "" ? setAddTask(copyTaskData) : setAddTask(data);
+    }, [searchText])
+
+    const saveTask = (index) => {
+
+        displayArr[index] = 0;
+
+        showEditBtn[index] = 1;
+
         const task = {
             name,
             age,
@@ -35,55 +58,45 @@ const TodoInput = () => {
             desc
         }
 
-        setAddTask([addTask.slice(addTask.length - 1, task)])
+        addTask[addTask.length - 1] = task;
+        copyTaskData = addTask;
+        setAddTask(addTask);
 
-        setHeight(100);
-
-        setDisplay(true);
-
-        setEdit(true)
-
-        //disable editing of all tags
-        setReadonly(true);
+        setExpand(!expand)
     }
 
     //Expand the Task
-    const showTask = () => {
-        setHeight(false);
-        setDisplay(false);
+    const showTask = (index) => {
         setExpand(!expand)
+
+        displayArr[index] = 1;
     }
 
-    const closeTask = () => {
-        console.log("close")
-        setHeight(true);
-        setDisplay(true);
+    const closeTask = (index) => {
         setExpand(!expand)
+
+        displayArr[index] = 0;
     }
 
     const addNewTask = () => {
         setAddTask([...addTask, 1])
+        displayArr.push(1);
+        delArr.push(0);
+        showEditBtn.push(0);
     }
 
-    const deleteTask = () => {
+    const deleteTask = (index) => {
         setDel(true);
+        delArr[index] = 1;
     }
 
-    const filterData = (e) => {
-        let name;
-        const data = addTask.filter((ele) => {
-            name = ele.name;
-            return name.includes(e.target.value);
-        })
-        console.log(data);
-        console.log(e.target.value)
-        setAddTask(data);
-    }
     return (
         <div>
             <h2>List View</h2>
             <div className="searchBar">
-                <input type="text" onChange={filterData} className='searchInput' placeholder='Search User' />
+                <input type="text" onChange={(e) => {
+                    setSearchText(e.target.value)
+                }} className='searchInput' placeholder='Search User' />
                 <img className='searchIcon' src={SearchIcon} alt="" />
             </div>
 
@@ -91,10 +104,16 @@ const TodoInput = () => {
                 <p>Are you sure you want to delete?</p>
 
                 <div className="delete-btn">
-                    <button>Cancel</button>
+                    <button onClick={() => {
+                        setDel(false);
+                    }}>Cancel</button>
                     <button className='del-btn' onClick={() => {
                         setDel(false);
-                        setAddTask([addTask.splice(addTask.length - 1)])
+                        window.scrollTo(0, 0);
+
+                        addTask.splice(addTask.length - 1, 1);
+
+                        setAddTask(addTask);
                     }}>Delete</button>
                 </div>
             </div> : <div></div>}
@@ -106,16 +125,16 @@ const TodoInput = () => {
                         <label htmlFor="service"></label>
                         {
                             addTask.map((ele, index) => (
-                                <div className='task-container' style={{ height: height ? '70px' : '350px' }} >
+                                <div className='task-container' style={{ height: displayArr[index] == 0 ? "70px" : "350px" }} >
                                     <div className="serviceHeader">
                                         <div className="left">
                                             <img className='profileImg' src={Profile} />
                                             <input className='name' type="text" onChange={(e) => setName(e.target.value)} value={ele.name} readOnly={readonly} />
                                         </div>
-                                        {expand ? <i class="fa fa-chevron-down" aria-hidden="true" onClick={showTask}></i> : <i class="fa fa-chevron-up" aria-hidden="true" onClick={closeTask}></i>}
+                                        {expand ? <i class="fa fa-chevron-down" aria-hidden="true" onClick={() => showTask(index)}></i> : <i class="fa fa-chevron-up" aria-hidden="true" onClick={() => closeTask(index)}></i>}
                                     </div>
 
-                                    <div className="serviceMid" style={{ display: display ? "none" : "flex" }}>
+                                    <div className="serviceMid" style={{ display: displayArr[index] === 1 ? "flex" : "none" }}>
                                         <div className="age">
                                             <p>Age</p>
                                             <input type="text" value={ele.age} onChange={(e) => setAge(e.target.value)} />
@@ -134,45 +153,51 @@ const TodoInput = () => {
                                         </div>
                                     </div>
 
-                                    <div className='serviceDesc' style={{ display: display ? "none" : "block" }}>
+                                    <div className='serviceDesc' style={{ display: displayArr[index] === 1 ? "block" : "none" }}>
                                         <p>Description</p>
                                         <textarea value={ele.desc} name="" id="" cols="10" rows="4" onChange={e => setDesc(e.target.value)}></textarea>
                                     </div>
 
-                                    {edit ?
-                                        <div className="editButton" style={{ display: display ? "none" : "flex" }}>
+                                    {
+                                        showEditBtn[index] === 1 ?
+                                            <div className="editButton" style={{ display: displayArr[index] === 1 ? "flex" : "none" }
+                                            } >
 
-                                            <div className="delete">
-                                                <i class="fa fa-trash" aria-hidden="true" onClick={deleteTask}></i>
-                                            </div>
+                                                <div className="delete">
+                                                    <i class="fa fa-trash" aria-hidden="true" onClick={() => deleteTask(index)}></i>
+                                                </div>
 
-                                            <div className="edit">
-                                                <i class="fa fa-pencil" aria-hidden="true" onClick={() => setReadonly(true)}></i>
+                                                <div className="edit">
+                                                    <i class="fa fa-pencil" aria-hidden="true" onClick={() => setReadonly(true)}></i>
+                                                </div>
                                             </div>
-                                        </div>
-                                        :
-                                        <div className="editButton" style={{ display: display ? "none" : "flex" }}>
+                                            :
+                                            <div className="editButton" style={{ display: displayArr[index] === 1 ? "flex" : "none" }}>
 
-                                            <div className="cancel">
-                                                <i class="fa fa-times" aria-hidden="true" ></i>
-                                            </div>
+                                                <div className="cancel">
+                                                    <i class="fa fa-times" aria-hidden="true" onClick={() => {
+                                                        displayArr[index] == 0;
+                                                        setExpand(!expand);
+                                                        showEditBtn[index] = 1;
+                                                    }}></i>
+                                                </div>
 
-                                            <div className="save">
-                                                <i class="fa fa-check" aria-hidden="true" onClick={saveTask}></i>
+                                                <div className="save">
+                                                    <i class="fa fa-check" aria-hidden="true" onClick={() => saveTask(index)}></i>
+                                                </div>
                                             </div>
-                                        </div>
                                     }
 
                                 </div>
                             ))
                         }
                     </div>
-                </form>
-            </div>
+                </form >
+            </div >
             <div className="button">
                 <button className='btn' onClick={addNewTask}>+</button>
             </div>
-        </div>
+        </div >
     )
 }
 
