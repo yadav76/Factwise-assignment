@@ -6,6 +6,7 @@ let delArr = [];
 let displayArr = [];
 let showEditBtn = [];
 let copyTaskData = [];
+let editData = [];
 
 const TodoInput = () => {
 
@@ -38,7 +39,7 @@ const TodoInput = () => {
         let name;
         let data = addTask.filter(ele => {
             name = ele.name;
-            return name.includes(searchText);
+            return ele.name.includes(searchText);
         })
 
         searchText === "" ? setAddTask(copyTaskData) : setAddTask(data);
@@ -62,6 +63,8 @@ const TodoInput = () => {
         copyTaskData = addTask;
         setAddTask(addTask);
 
+        editData[index] = 0;
+
         setExpand(!expand)
     }
 
@@ -83,6 +86,7 @@ const TodoInput = () => {
         displayArr.push(1);
         delArr.push(0);
         showEditBtn.push(0);
+        editData.push(1);
     }
 
     const deleteTask = (index) => {
@@ -129,7 +133,7 @@ const TodoInput = () => {
                                     <div className="serviceHeader">
                                         <div className="left">
                                             <img className='profileImg' src={Profile} />
-                                            <input className='name' type="text" onChange={(e) => setName(e.target.value)} value={ele.name} readOnly={readonly} />
+                                            <input style={{ border: editData[index] === 0 ? 'none' : '1px solid gray' }} className='name' type="text" onChange={(e) => setName(e.target.value)} value={ele.name} readOnly={readonly} />
                                         </div>
                                         {expand ? <i class="fa fa-chevron-down" aria-hidden="true" onClick={() => showTask(index)}></i> : <i class="fa fa-chevron-up" aria-hidden="true" onClick={() => closeTask(index)}></i>}
                                     </div>
@@ -137,11 +141,11 @@ const TodoInput = () => {
                                     <div className="serviceMid" style={{ display: displayArr[index] === 1 ? "flex" : "none" }}>
                                         <div className="age">
                                             <p>Age</p>
-                                            <input type="text" value={ele.age} onChange={(e) => setAge(e.target.value)} />
+                                            <input style={{ border: editData[index] === 0 ? 'none' : '1px solid gray' }} type="text" value={ele.age} onChange={(e) => setAge(e.target.value)} />
                                         </div>
                                         <div className='gender' >
                                             <p>Gender</p>
-                                            <select value={ele.gender} onChange={(e) => setGender(e.target.value)}>
+                                            <select style={{ border: editData[index] === 0 ? 'none' : '1px solid gray' }} value={ele.gender} onChange={(e) => setGender(e.target.value)}>
                                                 <option value="Rather not say">Rather not say</option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
@@ -149,13 +153,13 @@ const TodoInput = () => {
                                         </div>
                                         <div className="country" >
                                             <p>Country</p>
-                                            <input type="text" value={ele.country} onChange={e => setCountry(e.target.value)} />
+                                            <input style={{ border: editData[index] === 0 ? 'none' : '1px solid gray' }} type="text" value={ele.country} onChange={e => setCountry(e.target.value)} />
                                         </div>
                                     </div>
 
                                     <div className='serviceDesc' style={{ display: displayArr[index] === 1 ? "block" : "none" }}>
                                         <p>Description</p>
-                                        <textarea value={ele.desc} name="" id="" cols="10" rows="4" onChange={e => setDesc(e.target.value)}></textarea>
+                                        <textarea style={{ border: editData[index] === 0 ? 'none' : '1px solid gray' }} value={ele.desc} name="" id="" cols="10" rows="4" onChange={e => setDesc(e.target.value)}></textarea>
                                     </div>
 
                                     {
@@ -168,7 +172,12 @@ const TodoInput = () => {
                                                 </div>
 
                                                 <div className="edit">
-                                                    <i class="fa fa-pencil" aria-hidden="true" onClick={() => setReadonly(true)}></i>
+                                                    <i class="fa fa-pencil" aria-hidden="true" onClick={() => {
+                                                        editData[index] = 1;
+                                                        showEditBtn[index] = 0;
+                                                        setEdit(!edit);
+
+                                                    }}></i>
                                                 </div>
                                             </div>
                                             :
@@ -176,9 +185,10 @@ const TodoInput = () => {
 
                                                 <div className="cancel">
                                                     <i class="fa fa-times" aria-hidden="true" onClick={() => {
-                                                        displayArr[index] == 0;
+                                                        displayArr[index] = 0;
+
                                                         setExpand(!expand);
-                                                        showEditBtn[index] = 1;
+
                                                     }}></i>
                                                 </div>
 

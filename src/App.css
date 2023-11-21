@@ -51,6 +51,8 @@ h2{
   font-size: 25px;
   margin: 10px;
   cursor: pointer;
+  border: none;
+  outline: none;
 }
 
 /* CSS for AddTask */
